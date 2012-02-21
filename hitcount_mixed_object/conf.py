@@ -1,6 +1,6 @@
 from django.conf import settings
 
-HITCOUNT_MIXED_OBJECT_BACKEND = getattr(settings, 'HITCOUNT_MIXED_OBJECT_BACKEND', 'hitcount_mmixed_object.backends.mongodb')
+HITCOUNT_MIXED_OBJECT_BACKEND = getattr(settings, 'HITCOUNT_MIXED_OBJECT_BACKEND', 'hitcount_mixed_object.backends.mongodb')
 
 
 #settings related to mongo backend

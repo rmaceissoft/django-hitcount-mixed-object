@@ -19,7 +19,8 @@ def get_tuple_object(object):
 
 
 def get_related_objects_sorted(related_objects):
-    return sorted(related_objects, key=lambda obj : obj.pk)
+    sorted_list = sorted(related_objects, key=lambda obj : obj.pk)
+    return [item.pk for item in sorted_list]
 
 
 # backend methods
