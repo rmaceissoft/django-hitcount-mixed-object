@@ -7,6 +7,6 @@ HITCOUNT_MIXED_OBJECT_BACKEND = getattr(settings, 'HITCOUNT_MIXED_OBJECT_BACKEND
 
 MONGO_DB_HOST = getattr(settings, 'MONGO_DB_HOST', 'localhost')
 MONGO_DB_PORT = getattr(settings, 'MONGO_DB_PORT', 27017)
-MONGO_DB_NAME = getattr(settings, 'MONGO_DB_NAME', None)
+MONGO_DB_NAME = getattr(settings, 'MONGO_DB_NAME', 'mixed_object')
 MONGO_DB_USERNAME = getattr(settings, 'MONGO_DB_USERNAME', None)
 MONGO_DB_PASSWORD = getattr(settings, 'MONGO_DB_PASSWORD', None)
