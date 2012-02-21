@@ -15,12 +15,15 @@ class MixedObject(Document):
 # short cuts method
 def get_tuple_object(object):
     ct = ContentType.objects.get_for_model(object)
-    return ct.pk, object.pk
+    return str(ct.pk), str(object.pk)
 
 
 def get_related_objects_sorted(related_objects):
-    sorted_list = sorted(related_objects, key=lambda obj : obj.pk)
-    return [item.pk for item in sorted_list]
+    if related_objects:
+        sorted_list = sorted(related_objects, key=lambda obj : obj.pk)
+        return [str(item.pk) for item in sorted_list]
+    else:
+        return []
 
 
 # backend methods
@@ -50,9 +53,10 @@ def push_hit(object, related_objects, hit_count=1):
             object_id = object_id,
             related_objects = related_objects_id
         )
+        mixed_object.hit_count = hit_count
         mixed_object.save()
     else:
-        mixed_object.hit_count = hit_count
+        mixed_object.hit_count += hit_count
         mixed_object.save()
 
 
@@ -64,10 +68,8 @@ def get_hit_count(object, related_objects):
             content_type_id = content_type_id,
             object_id = object_id,
             related_objects = related_objects_id
-        )
+        ).get()
     except MixedObject.DoesNotExist:
         return 0
     else:
         return mixed_object.hit_count
-
-
