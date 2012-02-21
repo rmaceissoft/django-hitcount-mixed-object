@@ -73,3 +73,9 @@ def get_hit_count(object, related_objects):
         return 0
     else:
         return mixed_object.hit_count
+
+
+def clear_hitcount_collection():
+    """ clear all elements from collection into db related to backend
+    """
+    MixedObject.objects.delete()
