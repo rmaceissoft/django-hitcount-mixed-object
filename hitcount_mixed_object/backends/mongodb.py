@@ -1,5 +1,6 @@
 from mongoengine import *
 from django.contrib.contenttypes.models import ContentType
+from hitcount_mixed_object import conf
 
 
 class MixedObject(Document):
@@ -22,6 +23,17 @@ def get_related_objects_sorted(related_objects):
 
 
 # backend methods
+def init_connection():
+    connection_settings = dict(
+        host = conf.MONGO_DB_HOST,
+        port = conf.MONGO_DB_PORT,
+        db = conf.MONGO_DB_NAME,
+        username = conf.MONGO_DB_USERNAME,
+        password = conf.MONGO_DB_PASSWORD
+    )
+    connect(**connection_settings)
+
+
 def push_hit(object, related_objects, hit_count=1):
     content_type_id, object_id = get_tuple_object(object)
     related_objects_id = get_related_objects_sorted(related_objects)
