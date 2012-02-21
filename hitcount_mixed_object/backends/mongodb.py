@@ -17,11 +17,14 @@ def get_tuple_object(object):
     ct = ContentType.objects.get_for_model(object)
     return str(ct.pk), str(object.pk)
 
+_ct = ContentType.objects.get_for_model
 
 def get_related_objects_sorted(related_objects):
     if related_objects:
-        sorted_list = sorted(related_objects, key=lambda obj : obj.pk)
-        return [str(item.pk) for item in sorted_list]
+        list_related_objects = [(_ct(rel_object).pk, rel_object.pk) for rel_object in related_objects]
+        sorted_list = sorted(list_related_objects)
+        sorted_list = ((str(item0), str(item1)) for item0, item1 in sorted_list)
+        return [';'.join(item) for item in sorted_list]
     else:
         return []
 
