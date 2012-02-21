@@ -13,3 +13,9 @@ def get_hit_count(object, related_objects=None):
     backend = get_backend()
     return backend.get_hit_count(object, related_objects)
 
+
+def get_mixed_objects(filters=None, limit=None, offset=None, order_by=None):
+    backend = get_backend()
+    return backend.get_mixed_objects(filters, limit, offset, order_by)
+
+

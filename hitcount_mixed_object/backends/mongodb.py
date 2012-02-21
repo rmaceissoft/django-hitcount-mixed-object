@@ -79,3 +79,15 @@ def clear_hitcount_collection():
     """ clear all elements from collection into db related to backend
     """
     MixedObject.objects.delete()
+
+
+def get_mixed_objects(filters, limit, offset, order_by):
+    queryset = MixedObject.objects(**filters)
+    if order_by:
+        queryset = queryset.order_by(order_by)
+    if limit:
+        queryset = queryset.limit(limit)
+    if offset:
+        queryset.skip(offset)
+    return queryset
+
