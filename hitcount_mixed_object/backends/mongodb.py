@@ -11,6 +11,22 @@ class MixedObject(Document):
 
     hit_count = IntField()
 
+    def get_object(self):
+        """ return model instance represented by content_type_id & object_id instance values
+        """
+        ct = ContentType.objects.get(id=self.content_type_id)
+        return ct.get_object_for_this_type(id=self.object_id)
+
+    def get_related_objects(self):
+        """ return a list of model instances represented by related_objects value
+        """
+        list_related_objects = list()
+        for related_object in self.related_objects:
+            content_type_id, object_id = related_object.split(";")
+            ct = ContentType.objects.get(id=content_type_id)
+            list_related_objects.append(ct.get_object_for_this_type(id=object_id))
+        return list_related_objects
+
 
 # short cuts method
 def get_tuple_object(object):
