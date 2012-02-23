@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
     name = "django-hitcount-mixed-object",
-    version = "0.1",
+    version = "0.1.1",
     description = "holds hit count of mixed objects represented at relation model using NoSQL db",
     long_description = read('README.rst'),
     url = 'https://github.com/rmaceissoft/django-hitcount-mixed-object',
