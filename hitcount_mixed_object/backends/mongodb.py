@@ -1,3 +1,4 @@
+import logging
 from mongoengine import *
 from django.contrib.contenttypes.models import ContentType
 from hitcount_mixed_object import conf
@@ -60,29 +61,26 @@ def init_connection():
 def push_hit(object, related_objects, hit_count=1):
     content_type_id, object_id = get_tuple_object(object)
     related_objects_id = get_related_objects_sorted(related_objects)
+    params = dict(
+        content_type_id = content_type_id,
+        object_id = object_id,
+        related_objects = related_objects_id,
+        defaults = dict(hit_count=hit_count)
+    )
     try:
-        mixed_object = MixedObject.objects(
-            content_type_id = content_type_id,
-            object_id = object_id,
-            related_objects = related_objects_id
-        ).get()
-    except MixedObject.DoesNotExist:
-        mixed_object = MixedObject(
-            content_type_id = content_type_id,
-            object_id = object_id,
-            related_objects = related_objects_id
-        )
-        mixed_object.hit_count = hit_count
-        mixed_object.save()
-    else:
-        mixed_object.hit_count += hit_count
-        mixed_object.save()
+        mixed_object, created = MixedObject.objects.get_or_create(**params)
+        if mixed_object and not created:
+            # update hitcount value with atomic updates
+            MixedObject.objects(id=mixed_object.id).update(inc__hit_count=hit_count)
+    except Exception, ex:
+        logging.error(ex)
 
 
 def get_hit_count(object, related_objects):
     content_type_id, object_id = get_tuple_object(object)
     related_objects_id = get_related_objects_sorted(related_objects)
     try:
+        MixedObject.objects.get_or_create
         mixed_object = MixedObject.objects(
             content_type_id = content_type_id,
             object_id = object_id,
